@@ -57,28 +57,27 @@ function convertInteger(num) {
     
     let result = '';
     let unitIndex = 0;
-    let needZero = false; // 标记是否需要在下一个非零段前补零
     
     while (num > 0) {
         let section = num % 10000;
+        let nextNum = Math.floor(num / 10000); // 查看是否还有更高位
         
         if (section > 0) {
             let sectionStr = convertSection(section);
-            // 如果需要补零且当前段小于1000，补零
-            if (needZero && section < 1000) {
+            // 如果还有更高位且当前段小于1000，需要补零
+            if (nextNum > 0 && section < 1000) {
                 result = '零' + sectionStr + bigUnits[unitIndex] + result;
             } else {
                 result = sectionStr + bigUnits[unitIndex] + result;
             }
-            needZero = false;
         } else {
-            // 当前段为0，标记下次可能需要补零
-            if (unitIndex > 0) {
-                needZero = true;
+            // 当前段为0，如果还有更高位，只添加单位（零会在后续正则中处理）
+            if (nextNum > 0) {
+                result = bigUnits[unitIndex] + result;
             }
         }
         
-        num = Math.floor(num / 10000);
+        num = nextNum;
         unitIndex++;
     }
     
