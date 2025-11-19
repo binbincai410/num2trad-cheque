@@ -115,8 +115,8 @@ function convertToChequeFormat(numStr) {
         return '不支持負數';
     }
     
-    if (num > 999999999999.99) {
-        return '金額過大（最大支持 999,999,999,999.99）';
+    if (num >= 100000) {
+        return '超過最大支持金額（99999.99）';
     }
     
     if (num === 0) {
