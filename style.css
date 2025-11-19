@@ -1,0 +1,441 @@
+/**
+ * 支票大写金额转换器 - 样式文件
+ * 设计理念：现代、简洁、美观、响应式
+ */
+
+/* ==================== 全局样式 ==================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 
+                 'Microsoft JhengHei', 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ==================== 容器布局 ==================== */
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==================== 头部样式 ==================== */
+
+header {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+    padding: 20px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    font-weight: 700;
+}
+
+.subtitle {
+    font-size: 1.1em;
+    opacity: 0.95;
+    font-weight: 400;
+}
+
+/* ==================== 转换器卡片 ==================== */
+
+.converter-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+}
+
+.converter-card:hover {
+    transform: translateY(-2px);
+}
+
+/* ==================== 输入区域 ==================== */
+
+.input-section {
+    margin-bottom: 30px;
+}
+
+.output-section {
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #555;
+    font-size: 1em;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1.2em;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    outline: none;
+    font-family: inherit;
+}
+
+input[type="text"]:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+input[type="text"]:hover {
+    border-color: #bbb;
+}
+
+.hint {
+    display: block;
+    margin-top: 8px;
+    color: #999;
+    font-size: 0.9em;
+}
+
+/* ==================== 结果显示区域 ==================== */
+
+.result {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px 20px;
+    border-radius: 12px;
+    font-size: 1.5em;
+    font-weight: 600;
+    text-align: center;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-word;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.result.error {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    font-size: 1.2em;
+}
+
+/* ==================== 复制按钮 ==================== */
+
+.copy-btn {
+    width: 100%;
+    padding: 14px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.copy-btn:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+.copy-btn:active {
+    transform: translateY(0);
+}
+
+.copy-btn.copied {
+    background: #2196F3;
+}
+
+/* ==================== 示例区域 ==================== */
+
+.examples {
+    background: white;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+}
+
+.examples h3 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.example-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.example-item {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 16px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.example-item:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #b8c6db 100%);
+    border-color: #667eea;
+    transform: translateX(8px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.example-item:active,
+.example-item.clicked {
+    transform: translateX(8px) scale(0.98);
+}
+
+.example-item .num {
+    font-weight: 700;
+    color: #667eea;
+    min-width: 100px;
+    font-size: 1.05em;
+}
+
+.example-item .arrow {
+    color: #999;
+    font-size: 1.3em;
+    font-weight: 300;
+}
+
+.example-item .result-text {
+    color: #333;
+    flex: 1;
+    font-weight: 500;
+}
+
+/* ==================== 页脚 ==================== */
+
+footer {
+    text-align: center;
+    color: white;
+    padding: 20px;
+    opacity: 0.8;
+    font-size: 0.9em;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* ==================== 响应式设计 ==================== */
+
+/* 平板设备 */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2em;
+    }
+    
+    .converter-card, .examples {
+        padding: 25px;
+    }
+    
+    .result {
+        font-size: 1.3em;
+        padding: 20px 15px;
+    }
+}
+
+/* 手机设备 */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    header {
+        margin-bottom: 25px;
+        padding: 15px 5px;
+    }
+    
+    header h1 {
+        font-size: 1.8em;
+    }
+    
+    .subtitle {
+        font-size: 1em;
+    }
+    
+    .converter-card, .examples {
+        padding: 20px;
+        border-radius: 15px;
+    }
+    
+    input[type="text"] {
+        font-size: 1.1em;
+        padding: 12px 15px;
+    }
+    
+    .result {
+        font-size: 1.2em;
+        padding: 18px 15px;
+        min-height: 60px;
+    }
+    
+    .copy-btn {
+        padding: 12px;
+        font-size: 0.95em;
+    }
+    
+    .example-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 15px;
+    }
+    
+    .example-item:hover {
+        transform: translateX(0) translateY(-2px);
+    }
+    
+    .example-item .num {
+        min-width: auto;
+        font-size: 1em;
+    }
+    
+    .example-item .arrow {
+        display: none;
+    }
+    
+    .example-item .result-text {
+        font-size: 0.95em;
+    }
+    
+    .examples h3 {
+        font-size: 1.1em;
+    }
+}
+
+/* 超小屏幕 */
+@media (max-width: 400px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+    
+    .converter-card, .examples {
+        padding: 15px;
+    }
+    
+    .result {
+        font-size: 1.1em;
+    }
+}
+
+/* ==================== 打印样式 ==================== */
+
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .converter-card, .examples {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .copy-btn, footer {
+        display: none;
+    }
+    
+    .result {
+        color: black;
+        background: #f0f0f0;
+        border: 2px solid #333;
+    }
+}
+
+/* ==================== 无障碍支持 ==================== */
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+    input[type="text"]:focus {
+        border-width: 3px;
+    }
+    
+    .example-item {
+        border-width: 2px;
+        border-color: #999;
+    }
+}
+
+/* 减少动画（用户偏好设置） */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 焦点可见性 */
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* ==================== 自定义滚动条 ==================== */
+
+/* Webkit 浏览器 */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+

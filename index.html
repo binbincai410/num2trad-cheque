@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>支票大寫金額轉換器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 支票大寫金額轉換器</h1>
+            <p class="subtitle">將阿拉伯數字轉換為繁體中文大寫金額</p>
+        </header>
+
+        <div class="converter-card">
+            <div class="input-section">
+                <label for="numberInput">請輸入金額（阿拉伯數字）</label>
+                <input 
+                    type="text" 
+                    id="numberInput" 
+                    placeholder="例如：100 或 12345.67"
+                    autocomplete="off"
+                >
+                <small class="hint">支持整數和最多兩位小數</small>
+            </div>
+
+            <div class="output-section">
+                <label>繁體中文大寫金額</label>
+                <div class="result" id="result">請輸入金額</div>
+                <button class="copy-btn" id="copyBtn">📋 複製結果</button>
+            </div>
+        </div>
+
+        <div class="examples">
+            <h3>示例（點擊可快速填充）：</h3>
+            <div class="example-grid">
+                <div class="example-item" data-value="100">
+                    <span class="num">100</span>
+                    <span class="arrow">→</span>
+                    <span class="result-text">壹佰圓整</span>
+                </div>
+                <div class="example-item" data-value="12345.67">
+                    <span class="num">12345.67</span>
+                    <span class="arrow">→</span>
+                    <span class="result-text">壹萬貳仟叁佰肆拾伍圓陸角柒分</span>
+                </div>
+                <div class="example-item" data-value="10086">
+                    <span class="num">10086</span>
+                    <span class="arrow">→</span>
+                    <span class="result-text">壹萬零捌拾陸圓整</span>
+                </div>
+                <div class="example-item" data-value="1000.05">
+                    <span class="num">1000.05</span>
+                    <span class="arrow">→</span>
+                    <span class="result-text">壹仟圓零伍分</span>
+                </div>
+                <div class="example-item" data-value="0.50">
+                    <span class="num">0.50</span>
+                    <span class="arrow">→</span>
+                    <span class="result-text">零圓伍角</span>
+                </div>
+                <div class="example-item" data-value="100001">
+                    <span class="num">100001</span>
+                    <span class="arrow">→</span>
+                    <span class="result-text">壹拾萬零壹圓整</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 支票大寫金額轉換器 | 完全離線可用，無需網絡</p>
+        </footer>
+    </div>
+
+    <script src="converter.js"></script>
+</body>
+</html>
+

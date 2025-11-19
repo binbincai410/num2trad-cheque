@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>转换功能测试</title>
+    <style>
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #667eea;
+            color: white;
+        }
+        .pass {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .fail {
+            color: #f44336;
+            font-weight: bold;
+        }
+        .summary {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .summary.all-pass {
+            background: #4CAF50;
+        }
+        .summary.has-fail {
+            background: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 支票大写金额转换器 - 功能测试</h1>
+    
+    <div id="summary" class="summary">正在运行测试...</div>
+    
+    <div class="test-section">
+        <h2>整数示例测试</h2>
+        <table id="integerTests"></table>
+    </div>
+    
+    <div class="test-section">
+        <h2>小数示例测试</h2>
+        <table id="decimalTests"></table>
+    </div>
+    
+    <div class="test-section">
+        <h2>边界情况测试</h2>
+        <table id="edgeTests"></table>
+    </div>
+    
+    <div class="test-section">
+        <h2>特殊情况测试</h2>
+        <table id="specialTests"></table>
+    </div>
+
+    <script src="converter.js"></script>
+    <script>
+        // 测试用例
+        const testCases = {
+            integer: [
+                { input: '0', expected: '零圓整', desc: '零元' },
+                { input: '1', expected: '壹圓整', desc: '单元' },
+                { input: '10', expected: '壹拾圓整', desc: '整十' },
+                { input: '100', expected: '壹佰圓整', desc: '整百' },
+                { input: '1000', expected: '壹仟圓整', desc: '整千' },
+                { input: '10000', expected: '壹萬圓整', desc: '整万' },
+                { input: '12345', expected: '壹萬貳仟叁佰肆拾伍圓整', desc: '普通数字' },
+                { input: '10086', expected: '壹萬零捌拾陸圓整', desc: '中间有零' },
+                { input: '100001', expected: '壹拾萬零壹圓整', desc: '跨万位的零' },
+                { input: '10001000', expected: '壹仟萬壹仟圓整', desc: '大数字' },
+                { input: '1001', expected: '壹仟零壹圓整', desc: '中间零' },
+                { input: '10001', expected: '壹萬零壹圓整', desc: '万位零' },
+            ],
+            decimal: [
+                { input: '0.01', expected: '零圓零壹分', desc: '只有分' },
+                { input: '0.10', expected: '零圓壹角', desc: '只有角' },
+                { input: '0.50', expected: '零圓伍角', desc: '五角' },
+                { input: '1.23', expected: '壹圓貳角叁分', desc: '有角有分' },
+                { input: '100.05', expected: '壹佰圓零伍分', desc: '角为零' },
+                { input: '100.50', expected: '壹佰圓伍角', desc: '分为零' },
+                { input: '12345.67', expected: '壹萬貳仟叁佰肆拾伍圓陸角柒分', desc: '完整金额' },
+                { input: '1000.05', expected: '壹仟圓零伍分', desc: '整数部分末尾零' },
+                { input: '100.10', expected: '壹佰圓壹角', desc: '角不为零分为零' },
+            ],
+            edge: [
+                { input: '999999999999.99', expected: '玖仟玖佰玖拾玖億玖仟玖佰玖拾玖萬玖仟玖佰玖拾玖圓玖角玖分', desc: '最大值' },
+                { input: '100000000', expected: '壹億圓整', desc: '整亿' },
+                { input: '200000000', expected: '貳億圓整', desc: '二亿' },
+                { input: '1000000000', expected: '壹拾億圓整', desc: '十亿' },
+            ],
+            special: [
+                { input: '20', expected: '貳拾圓整', desc: '二十' },
+                { input: '30', expected: '叁拾圓整', desc: '三十' },
+                { input: '101', expected: '壹佰零壹圓整', desc: '一百零一' },
+                { input: '110', expected: '壹佰壹拾圓整', desc: '一百一十' },
+                { input: '200', expected: '貳佰圓整', desc: '二百' },
+                { input: '2000', expected: '貳仟圓整', desc: '二千' },
+                { input: '20000', expected: '貳萬圓整', desc: '二万' },
+                { input: '50.5', expected: '伍拾圓伍角', desc: '五十点五' },
+                { input: '99.99', expected: '玖拾玖圓玖角玖分', desc: '九十九点九九' },
+            ]
+        };
+
+        // 运行测试
+        function runTests() {
+            let totalTests = 0;
+            let passedTests = 0;
+            
+            // 测试整数
+            let html = '<tr><th>输入</th><th>预期输出</th><th>实际输出</th><th>说明</th><th>结果</th></tr>';
+            testCases.integer.forEach(test => {
+                totalTests++;
+                const result = convertToChequeFormat(test.input);
+                const pass = result === test.expected;
+                if (pass) passedTests++;
+                html += `<tr>
+                    <td>${test.input}</td>
+                    <td>${test.expected}</td>
+                    <td>${result}</td>
+                    <td>${test.desc}</td>
+                    <td class="${pass ? 'pass' : 'fail'}">${pass ? '✓ 通过' : '✗ 失败'}</td>
+                </tr>`;
+            });
+            document.getElementById('integerTests').innerHTML = html;
+            
+            // 测试小数
+            html = '<tr><th>输入</th><th>预期输出</th><th>实际输出</th><th>说明</th><th>结果</th></tr>';
+            testCases.decimal.forEach(test => {
+                totalTests++;
+                const result = convertToChequeFormat(test.input);
+                const pass = result === test.expected;
+                if (pass) passedTests++;
+                html += `<tr>
+                    <td>${test.input}</td>
+                    <td>${test.expected}</td>
+                    <td>${result}</td>
+                    <td>${test.desc}</td>
+                    <td class="${pass ? 'pass' : 'fail'}">${pass ? '✓ 通过' : '✗ 失败'}</td>
+                </tr>`;
+            });
+            document.getElementById('decimalTests').innerHTML = html;
+            
+            // 测试边界情况
+            html = '<tr><th>输入</th><th>预期输出</th><th>实际输出</th><th>说明</th><th>结果</th></tr>';
+            testCases.edge.forEach(test => {
+                totalTests++;
+                const result = convertToChequeFormat(test.input);
+                const pass = result === test.expected;
+                if (pass) passedTests++;
+                html += `<tr>
+                    <td>${test.input}</td>
+                    <td>${test.expected}</td>
+                    <td>${result}</td>
+                    <td>${test.desc}</td>
+                    <td class="${pass ? 'pass' : 'fail'}">${pass ? '✓ 通过' : '✗ 失败'}</td>
+                </tr>`;
+            });
+            document.getElementById('edgeTests').innerHTML = html;
+            
+            // 测试特殊情况
+            html = '<tr><th>输入</th><th>预期输出</th><th>实际输出</th><th>说明</th><th>结果</th></tr>';
+            testCases.special.forEach(test => {
+                totalTests++;
+                const result = convertToChequeFormat(test.input);
+                const pass = result === test.expected;
+                if (pass) passedTests++;
+                html += `<tr>
+                    <td>${test.input}</td>
+                    <td>${test.expected}</td>
+                    <td>${result}</td>
+                    <td>${test.desc}</td>
+                    <td class="${pass ? 'pass' : 'fail'}">${pass ? '✓ 通过' : '✗ 失败'}</td>
+                </tr>`;
+            });
+            document.getElementById('specialTests').innerHTML = html;
+            
+            // 显示总结
+            const summary = document.getElementById('summary');
+            const passRate = ((passedTests / totalTests) * 100).toFixed(1);
+            summary.innerHTML = `
+                测试完成！<br>
+                总计: ${totalTests} 个测试 | 
+                通过: ${passedTests} 个 | 
+                失败: ${totalTests - passedTests} 个 | 
+                通过率: ${passRate}%
+            `;
+            
+            if (passedTests === totalTests) {
+                summary.className = 'summary all-pass';
+            } else {
+                summary.className = 'summary has-fail';
+            }
+        }
+
+        // 页面加载完成后运行测试
+        window.addEventListener('load', runTests);
+    </script>
+</body>
+</html>
+
