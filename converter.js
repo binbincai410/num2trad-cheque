@@ -5,7 +5,7 @@
 
 // 数字到繁体中文的映射
 const digitMap = {
-    '0': '零', '1': '壹', '2': '貳', '3': '叁', '4': '肆',
+    '0': '零', '1': '壹', '2': '貳', '3': '參', '4': '肆',
     '5': '伍', '6': '陸', '7': '柒', '8': '捌', '9': '玖'
 };
 
@@ -150,6 +150,9 @@ function convertToChequeFormat(numStr) {
             // 角为0
             if (fen !== '0') {
                 result += '零' + digitMap[fen] + '分';
+            } else {
+                // 角和分都是0，添加"整"
+                result += '整';
             }
         }
     } else {
@@ -162,7 +165,9 @@ function convertToChequeFormat(numStr) {
 
 // ==================== DOM 操作和事件监听 ====================
 
-document.addEventListener('DOMContentLoaded', function() {
+// 只在浏览器环境中执行 DOM 操作
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', function() {
     const input = document.getElementById('numberInput');
     const result = document.getElementById('result');
     const copyBtn = document.getElementById('copyBtn');
@@ -281,7 +286,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (input.value) {
         result.textContent = convertToChequeFormat(input.value);
     }
-});
+    });
+}
 
 // 导出函数供测试使用（如果需要）
 if (typeof module !== 'undefined' && module.exports) {
